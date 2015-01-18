@@ -1,0 +1,13 @@
+---
+- name: put hbase-regionserver eye config file
+  template: src=hbase/regionserver.rb dest=/etc/eye/hdfs-regionserver.rb owner=root group=root mode=0644
+
+- name: load config in eye
+  command: bash -c "source /usr/local/rvm/scripts/rvm && eye l /etc/eye/apps.eye"
+  sudo: yes
+
+- name: put hbase-regionserver stop script
+  template: src=hbase/hbase-region-stop.sh dest=/root/hbase-region-stop.sh owner=root group=root mode=0755
+
+- name: put hbase-regionserver start script
+  template: src=hbase/hbase-region-start.sh dest=/root/hbase-region-start.sh owner=root group=root mode=0755
