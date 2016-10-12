@@ -1,0 +1,16 @@
+[Unit]
+Description=HBase Regionserver Service
+Documentation=https://github.com/gitinsky/ansible-role-hbase-regionserver
+
+[Service]
+Type=simple
+User={{ hadoop_user }}
+Group={{ hadoop_user }}
+ExecStart={{ hbase_distr_prefix }}/bin/hbase regionserver start
+StandardOutput=journal
+StandardError=journal
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+Alias=hbase-regionserver-{{ env_name }}.service
