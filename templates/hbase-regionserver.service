@@ -3,6 +3,7 @@ Description=HBase Regionserver Service
 Documentation=https://github.com/gitinsky/ansible-role-hbase-regionserver
 
 [Service]
+LimitNOFILE=65535
 Type=simple
 User={{ hadoop_user }}
 Group={{ hadoop_user }}
