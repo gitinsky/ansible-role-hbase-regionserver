@@ -1,4 +1,4 @@
 ---
 dependencies:
-  - { role: hbase }
-  - { role: hbase-lzo }
+  - { role: hbase, tags: ['dependent'] }
+  - { role: hbase-lzo, tags: ['dependent'] }
