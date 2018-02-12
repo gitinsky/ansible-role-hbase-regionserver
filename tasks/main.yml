@@ -9,10 +9,10 @@
   when: "not (ansible_distribution == 'Ubuntu' and ansible_distribution_version == '16.04')"
 
 - name: put systemd unit file to its destination
-  template: src=hbase-regionserver.service dest=/etc/systemd/system/hbase-regionserver-{{ env_name }}.service owner=root group=root mode=0644
+  template: src=hbase-regionserver.service dest=/etc/systemd/system/hbase-regionserver-{{ env_name }}{% if hbase_rs_num|default("") != "" %}-{{ hbase_rs_num }}{% endif %}.service owner=root group=root mode=0644
   when: "ansible_distribution == 'Ubuntu' and ansible_distribution_version == '16.04'"
   notify: systemctl daemon-reload
 
 - name: enable hbase-regionserver service
-  service: name=hbase-regionserver-{{ env_name }} enabled=yes state=started
+  service: name=hbase-regionserver-{{ env_name }}{% if hbase_rs_num|default("") != "" %}-{{ hbase_rs_num }}{% endif %} enabled=yes state=started
   when: "ansible_distribution == 'Ubuntu' and ansible_distribution_version == '16.04'"
