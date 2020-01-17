@@ -1,18 +1,18 @@
 ---
 - name: put hbase-regionserver eye config file
   template: src=hbase/regionserver.rb dest=/etc/eye/hbase-regionserver-{{ env_name }}.rb owner=root group=root mode=0644
-  when: "not (ansible_distribution == 'Ubuntu' and ansible_distribution_version|version_compare('16.04', '>='))"
+  when: "not (ansible_distribution == 'Ubuntu' and ansible_distribution_version is version('16.04', '>='))"
 
 - name: load config in eye
   command: bash -c "source /usr/local/rvm/scripts/rvm && eye l /etc/eye/apps.eye"
   become: yes
-  when: "not (ansible_distribution == 'Ubuntu' and ansible_distribution_version|version_compare('16.04', '>='))"
+  when: "not (ansible_distribution == 'Ubuntu' and ansible_distribution_version is version('16.04', '>='))"
 
 - name: put systemd unit file to its destination
   template: src=hbase-regionserver.service dest=/etc/systemd/system/hbase-regionserver-{{ env_name }}{% if hbase_rs_num|default("") != "" %}-{{ hbase_rs_num }}{% endif %}.service owner=root group=root mode=0644
-  when: "ansible_distribution == 'Ubuntu' and ansible_distribution_version|version_compare('16.04', '>=')"
+  when: "ansible_distribution == 'Ubuntu' and ansible_distribution_version is version('16.04', '>=')"
   notify: systemctl daemon-reload
 
 - name: enable hbase-regionserver service
   service: name=hbase-regionserver-{{ env_name }}{% if hbase_rs_num|default("") != "" %}-{{ hbase_rs_num }}{% endif %} enabled=yes state=started
-  when: "ansible_distribution == 'Ubuntu' and ansible_distribution_version|version_compare('16.04', '>=')"
+  when: "ansible_distribution == 'Ubuntu' and ansible_distribution_version is version('16.04', '>=')"
